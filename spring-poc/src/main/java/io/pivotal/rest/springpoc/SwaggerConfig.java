@@ -18,17 +18,17 @@ import java.util.Set;
 @EnableSwagger2
 public class SwaggerConfig {
 
-    public static final Contact DEFAULT_CONTACT = new Contact("Sonali","https://github.com/ssinghalpvtl","xxx@gmail.com");
+    public static final Contact DEFAULT_CONTACT = new Contact("Sonali", "https://github.com/ssinghalpvtl", "xxx@gmail.com");
 
-    public static final ApiInfo DEFAULT_API_INFO = new ApiInfo("Api Documentation","Spring boot API","1.0","urn:tos",
-            DEFAULT_CONTACT,"Apache 2.0","www.example.com", Arrays.asList());
+    public static final ApiInfo DEFAULT_API_INFO = new ApiInfo("Api Documentation", "Spring boot API", "1.0", "urn:tos",
+            DEFAULT_CONTACT, "Apache 2.0", "www.example.com", Arrays.asList());
 
 
     public static final Set<String> DEFAULT_MEDIA_TYPES = new HashSet<String>(
-            Arrays.asList(MediaType.APPLICATION_JSON.getType(),MediaType.APPLICATION_XML.getType()));
+            Arrays.asList(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_XML.getType()));
 
     @Bean
-    public Docket api(){
+    public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2).apiInfo(DEFAULT_API_INFO).produces(DEFAULT_MEDIA_TYPES).consumes(DEFAULT_MEDIA_TYPES);
     }
 }

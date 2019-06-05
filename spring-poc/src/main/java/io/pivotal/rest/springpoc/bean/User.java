@@ -7,13 +7,14 @@ import lombok.*;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
-@ToString
 @EqualsAndHashCode
 @AllArgsConstructor
 @ApiModel("User information")
@@ -32,5 +33,8 @@ public class User {
     @Past
     @ApiModelProperty("User date of Birth")
     private LocalDate dateOfBirth;
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts;
 
 }
