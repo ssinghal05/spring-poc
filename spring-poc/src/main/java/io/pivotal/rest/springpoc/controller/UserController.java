@@ -16,6 +16,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -32,12 +33,12 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public Resource<User> retreiveUser(@PathVariable final Integer id){
-        User user = userService.findOne(id);
-        if(user == null){
+        Optional<User> user = userService.findOne(id);
+        if(!user.isPresent()){
             throw new UserNotFoundException("User " +id + " not found");
 
         }
-        Resource<User> resource = new Resource<User>(user);
+        Resource<User> resource = new Resource<User>(user.get());
         ControllerLinkBuilder linkBuilder = linkTo(methodOn(this.getClass()).listAllUsers());
         resource.add(linkBuilder.withRel("all-users"));
         return resource;

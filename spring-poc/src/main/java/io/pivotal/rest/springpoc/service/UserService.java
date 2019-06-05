@@ -1,60 +1,46 @@
 package io.pivotal.rest.springpoc.service;
 
 import io.pivotal.rest.springpoc.bean.User;
+import io.pivotal.rest.springpoc.exception.UserNotFoundException;
+import io.pivotal.rest.springpoc.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class UserService {
 
     private static List<User> users = new ArrayList<>();
 
-    private static Integer userCount = 3;
-
-
-    static {
-
-        users.add(new User(Integer.valueOf(1), "John", LocalDate.of(2000,1,2)));
-        users.add(new User(Integer.valueOf(2), "Mark", LocalDate.of(1989,1,2)));
-        users.add(new User(Integer.valueOf(3), "Tim", LocalDate.of(1995,1,2)));
-
-    }
+    @Autowired
+    public UserRepository userRepository;
 
     public List<User> findAll(){
-        return users;
+        return userRepository.findAll();
     }
 
     public User saveUser(User user){
-        if(user != null) {
-            user.setId(++userCount);
-            users.add(user);
-        }
-        return user;
+
+        return userRepository.save(user);
     }
 
-    public User findOne(Integer id){
-        for(User user: users) {
-            if(user.getId() == id) {
-                return user;
-            }
-        }
-        return null;
+    public Optional<User> findOne(Integer id){
+        return userRepository.findById(id);
     }
 
     public User deleteUser(Integer id){
-        Iterator<User> iterator = users.iterator();
-        while ((iterator.hasNext())){
-            User user = iterator.next();
-            if(user.getId() == id){
-                iterator.remove();
-                return  user;
-            }
+
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent()) {
+            userRepository.deleteById(id);
+            return user.get();
         }
-        return  null;
+        return null;
     }
 
 }
